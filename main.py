@@ -4,21 +4,21 @@ The line is a comment a developer would leave above fragile production
 code, in the voice of someone who has already learned the lesson the
 hard way. The joke is specific, not generic: a single sleep(1) call
 that nobody understands but that checkout somehow depends on. The
-developer tried removing it twice and production broke both times, so
-the comment is not a warning about theory -- it is a scar, written
-down so the next person does not repeat the experiment. The humour
-lands in one beat: the most load-bearing line in the codebase is a
-one-second nap, and the punchline is the honest admission that nobody
-knows why it works, only that it does.
+developer removed it twice and checkout died twice, so the comment is
+not a warning about theory -- it is a scar, written down so the next
+person does not become the third attempt. The humour lands in one
+beat: the most load-bearing line in the codebase is a one-second nap,
+and the punchline is the honest admission that nobody knows why it
+works, only that it does.
 """
 
 import os
 
 # The entry: a developer's comment above fragile production code.
-# A sleep(1) nobody understands holds checkout together. Removing it
-# was tried twice, and it broke both times -- so the comment begs the
-# next reader not to be the third attempt.
-LINE = "// Do not remove this sleep(1). We tried twice. Checkout broke both times. Nobody knows why."
+# A sleep(1) nobody understands holds checkout together. It was
+# removed twice, and checkout died twice -- so the comment tells the
+# next reader to leave it alone and not become the third attempt.
+LINE = "// Leave this sleep(1) alone. We removed it twice and checkout died twice. Nobody knows why."
 
 
 def validate(text):
@@ -42,6 +42,8 @@ def validate(text):
         raise ValueError("entry must not have leading or trailing space")
     if "  " in text:
         raise ValueError("entry must not contain double spaces")
+    if not text.startswith("//"):
+        raise ValueError("entry must be a code comment starting with //")
 
 
 def main():
